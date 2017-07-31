@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div>
+      <div>
+        Sign up for Vinyl
+      </div>
+      <form>
+        Name <input type="text" name="name" placeholder="Your Name">
+        Email <input type="email" name="email" placeholder="Your Email">
+        Password <input type="password" name="password" placeholder="Enter a password">
+        <input type="submit" value="Sign Up">
+      </form>
+      <% if (signUpError) { %>
+        <div class="flashError">
+          <%= signUpError %>
+        </div>
+      <% } %>
+    </div>
+  </body>
+</html>
+
