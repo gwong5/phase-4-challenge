@@ -3,3 +3,12 @@ html, body {
   padding: 0;
   width: 100vw;
 }
+
+.siteNavBar {
+  margin-top: 5px;
+}
+
+.right {
+  float: right;
+  margin-right: 10px;
+}

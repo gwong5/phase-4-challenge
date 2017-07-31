@@ -1,13 +1,29 @@
 const express = require('express')
+const session = require('express-session')
 const bodyParser = require('body-parser')
+const passport = require('passport')
+const flash = require('connect-flash')
 const database = require('./database')
+const album = require('./routes/albums')
 const app = express()
 
 require('ejs')
 app.set('view engine', 'ejs');
 
 app.use(express.static('public'))
+
+app.use(session({secret: process.env.SECRET}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
+
 app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use((request, response, next) => {
+  const { user } = request
+  response.locals.user = user
+  next()
+})
 
 app.get('/', (request, response) => {
   database.getAlbums((error, albums) => {
@@ -19,18 +35,34 @@ app.get('/', (request, response) => {
   })
 })
 
-app.get('/albums/:albumID', (request, response) => {
-  const albumID = request.params.albumID
-
-  database.getAlbumsByID(albumID, (error, albums) => {
-    if (error) {
-      response.status(500).render('error', { error: error })
-    } else {
-      const album = albums[0]
-      response.render('album', { album: album })
-    }
-  })
+app.use((request, response, next) => {
+  const { user } = request
+  if (!user) {
+    next()
+  }
+  response.redirect(`/profile/${user.id}`)
 })
+
+app.get('/sign_up', (request, response) => {
+  response.render('sign_up', { signUpError: request.flash('signUpError') })
+})
+
+app.get('/sign_in', (request, response) => {
+  response.render('sign_in', { signInError: request.flash('signInError') })
+})
+
+app.use((request, response, next) => {
+  if (request.user) {
+    next()
+  }
+  response.redirect('/sign_in')
+})
+
+app.get('/profile/:userId', (request, response) => {
+  response.render('profile')
+})
+
+app.use('/albums', albums)
 
 app.use((request, response) => {
   response.status(404).render('not_found')
