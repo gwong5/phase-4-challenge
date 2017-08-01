@@ -4,7 +4,8 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 const flash = require('connect-flash')
 const database = require('./database')
-const album = require('./routes/albums')
+const albums = require('./routes/albums')
+const users = require('./routes/users')
 const app = express()
 
 require('ejs')
@@ -12,7 +13,12 @@ app.set('view engine', 'ejs');
 
 app.use(express.static('public'))
 
-app.use(session({secret: process.env.SECRET}))
+app.use(session({
+  secret: process.env.SECRET || 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 }
+}))
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
@@ -37,10 +43,11 @@ app.get('/', (request, response) => {
 
 app.use((request, response, next) => {
   const { user } = request
-  if (!user) {
+  if (user) {
+    response.redirect(`/profile/${user.id}`)
+  } else {
     next()
   }
-  response.redirect(`/profile/${user.id}`)
 })
 
 app.get('/sign_up', (request, response) => {
@@ -54,14 +61,12 @@ app.get('/sign_in', (request, response) => {
 app.use((request, response, next) => {
   if (request.user) {
     next()
+  } else {
+    response.redirect('/sign_in')
   }
-  response.redirect('/sign_in')
 })
 
-app.get('/profile/:userId', (request, response) => {
-  response.render('profile')
-})
-
+app.use('/users', users)
 app.use('/albums', albums)
 
 app.use((request, response) => {

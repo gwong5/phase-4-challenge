@@ -11,14 +11,14 @@
       <div>
         Sign In
       </div>
-      <form>
+      <form action="/users/sign_in" method="post">
         Email <input type="email" name="email" placeholder="Your Email">
         Password <input type="password" name="password" placeholder="Enter a password">
         <input type="submit" value="Sign In">
       </form>
-      <% if (loginError) { %>
+      <% if (signInError) { %>
         <div class="flashError">
-          <%= loginError %>
+          <%= signInError %>
         </div>
       <% } %>
     </div>
