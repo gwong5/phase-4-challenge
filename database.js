@@ -16,13 +16,8 @@ const query = function(sql, variables, callback){
       console.error(error)
       callback(error)
     } else {
-      if (result.rows.length > 1) {
-        console.log('QUERY <-', JSON.stringify(result.rows))
-        callback(error, result.rows)
-      } else {
-        console.log('QUERY <-', JSON.stringify(result.rows[0]))
-        callback(error, result.rows[0])
-      }
+      console.log('QUERY <-', JSON.stringify(result.rows))
+      callback(error, result.rows)
     }
   })
 }
@@ -43,15 +38,15 @@ const getReviewsByAlbum = function (albumId, callback) {
   query("SELECT * FROM reviews WHERE album_id = $1 ORDER BY review_created DESC", [albumId], callback)
 }
 
-const getReviewsByUser = function (albumId, userId, callback) {
-  query("SELECT * FROM reviews WHERE  album_id = $1 AND user_id = $2", [albumId, userId], callback)
+const getReviewsByUser = function (userId, callback) {
+  query("SELECT * FROM reviews WHERE user_id = $1", [userId], callback)
 }
 
-const addNewReview = function (albumId, userId, reviewBody) {
+const addNewReview = function (albumId, userId, reviewBody, callback) {
   query("INSERT INTO reviews (album_id, user_id, review_body) VALUES ($1, $2, $3)", [albumId, userId, reviewBody], callback)
 }
 
-const deleteReview = function (reviewId) {
+const deleteReview = function (reviewId, callback) {
   query("DELETE FROM reviews WHERE id = $1", [reviewId], callback)
 }
 

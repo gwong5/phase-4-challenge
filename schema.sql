@@ -24,5 +24,5 @@ CREATE TABLE reviews (
   album_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
   review_body VARCHAR(5000),
-  review_created TIMESTAMP
+  review_created DATE DEFAULT CURRENT_DATE
 );

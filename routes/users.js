@@ -11,7 +11,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userId, done) => {
   Database.findUserById(userId, (error, user) => {
-    return done(error, user)
+    return done(error, user[0])
   })
 })
 
@@ -22,17 +22,15 @@ passport.use(new LocalStrategy({
   },
   (request, email, plainTextPassword, done) => {
     Database.findUserByEmail(email, (error, user) => {
-      console.log('passport local: ', user);
       if (!user) {
         return done(null, false, request.flash('signInError', 'User does not exist.'))
       } else {
-        const isValid = User.validatePassword(plainTextPassword, user.salted_password)
+        const isValid = User.validatePassword(plainTextPassword, user[0].salted_password)
         console.log(isValid)
         if (!isValid) {
           return done(null, false, request.flash('signInError', 'Invalid Password.'))
         } else {
-          console.log('logging in')
-          return done(null, user)
+          return done(null, user[0])
         }
       }
     })
@@ -44,7 +42,7 @@ router.get('/:userId', (request, response) => {
   
   Database.findUserById(userId, (error, member) => {
     Database.getReviewsByUser(userId, (error, reviews) => {
-      response.render('profile', { member: member, reviews: reviews })
+      response.render('profile', { member: member[0], reviews: reviews })
     })
   })
 })
@@ -68,7 +66,7 @@ router.post('/sign_up', (request, response) => {
       User.createNewUser(name, email, password, (newUser) => {
         passport.authenticate('local')
         (request, response, () => {
-          response.redirect(`/users/${newUser.id}`)
+          response.redirect(`/users/${newUser[0].id}`)
         })
       })
     }

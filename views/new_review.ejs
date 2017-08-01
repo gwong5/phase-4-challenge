@@ -3,8 +3,8 @@
 <div>
   New review for <%= album.title %>
 </div>
-<form action="/albums/<%=album.id%>/reviews/post" method="post">
-  <textarea rows="50" cols="50" required></textarea>
+<form action="/albums/<%=album.id%>/new_review" method="post">
+  <textarea name="reviewBody" rows="50" cols="50" required></textarea>
   <input type="submit" value="Submit">
 </form>
 
