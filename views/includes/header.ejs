@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vinyl</title>
+  <link rel="stylesheet" type="text/css" href="/styles/style.css">
+</head>
+<body>
+  <div class="siteNavBar">
+  <a href="/"><span class="title">Vinyl</span></a>
+    <span class="siteNavBar right">
+      <% if (user) { %>
+        <a href="/users/<%= user.id %>">Profile</a>
+        <a href="/sign_out">Sign Out</a>
+      <% } else { %>
+        <a href="/sign_up">Sign Up</a>
+        <a href="/sign_in">Sign In</a>
+      <% } %>
+    </span>
+  </div>
