@@ -1,10 +1,13 @@
-<% includes includes/header.ejs %>
+<% include includes/header.ejs %>
 
   <h1><%= album.title %></h1>
   <em>by <%= album.artist %></em>
 
   <h2>Reviews</h2>
+  <form action="/albums/<%= album.id %>/new_review">
+    <input type="submit" value="Add Review">
+  </form>
 
   <!-- TODO: implement album reviews -->
 
-<% includes includes/footer.ejs %>
+<% include includes/footer.ejs %>

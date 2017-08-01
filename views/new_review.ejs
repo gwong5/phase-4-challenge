@@ -1,9 +1,9 @@
 <% include includes/header.ejs %>
 
 <div>
-  Review {album name}
+  New review for <%= album.title %>
 </div>
-<form>
+<form action="/albums/<%=album.id%>/reviews/post" method="post">
   <textarea rows="50" cols="50" required></textarea>
   <input type="submit" value="Submit">
 </form>
