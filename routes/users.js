@@ -10,10 +10,8 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((userId, done) => {
-  Database.findUserById(userId, (user) => {
-    if (user) {
-      return done(null)
-    }
+  Database.findUserById(userId, (error, user) => {
+    return done(error, user)
   })
 })
 
@@ -23,23 +21,22 @@ passport.use(new LocalStrategy({
     passReqToCallback: true
   },
   (request, email, plainTextPassword, done) => {
-    console.log('is this even working')
     Database.findUserByEmail(email, (error, user) => {
       console.log('passport local: ', user);
       if (!user) {
         return done(null, false, request.flash('signInError', 'User does not exist.'))
       } else {
-        User.validatePassword(plainTextPassword, user.salted_password)
-          .then((isValid) => {
-            if (!isValid) {
-              return done(null, false, request.flash('signInError', 'Invalid Password.'))
-            }
-            return done(null, user)
-          })
+        const isValid = User.validatePassword(plainTextPassword, user.salted_password)
+        console.log(isValid)
+        if (!isValid) {
+          return done(null, false, request.flash('signInError', 'Invalid Password.'))
+        } else {
+          console.log('logging in')
+          return done(null, user)
         }
-      })
-    }
-  )
+      }
+    })
+  })
 )
 
 router.get('/:userId', (request, response) => {
@@ -47,14 +44,13 @@ router.get('/:userId', (request, response) => {
   response.render('profile')
 })
 
-router.post('/sign_in', (request, response) => {
-  console.log('blasdf')
+router.post('/sign_in',
   passport.authenticate('local', {
-    successRedirect: `/`,
+    successRedirect: '/',
     failureRedirect: '/sign_in',
-    failurFlash: true
+    failureFlash: true
   })
-})
+)
 
 router.post('/sign_up', (request, response) => {
   const { name, email, password } = request.body

@@ -6,7 +6,7 @@ const makeSaltedPassword = (plainTextPassword) =>
   bcrypt.hashSync(plainTextPassword, salt)
 
 const validatePassword = (plainTextPassword, saltedPassword) =>
-  bcrypt.compare(plainTextPassword, saltedPassword)
+  bcrypt.compareSync(plainTextPassword, saltedPassword)
 
 const createNewUser = (name, email, plainTextPassword, callback) => {
   const saltedPassword = makeSaltedPassword(plainTextPassword)

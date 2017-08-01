@@ -41,10 +41,18 @@ app.get('/', (request, response) => {
   })
 })
 
+app.get('/sign_out', (request, response) => {
+  request.logout()
+  response.redirect('/')
+})
+
+app.use('/users', users)
+app.use('/albums', albums)
+
 app.use((request, response, next) => {
   const { user } = request
   if (user) {
-    response.redirect(`/profile/${user.id}`)
+    response.redirect(`/users/${user.id}`)
   } else {
     next()
   }
@@ -57,17 +65,6 @@ app.get('/sign_up', (request, response) => {
 app.get('/sign_in', (request, response) => {
   response.render('sign_in', { signInError: request.flash('signInError') })
 })
-
-// app.use((request, response, next) => {
-//   if (request.user) {
-//     next()
-//   } else {
-//     response.redirect('/sign_in')
-//   }
-// })
-
-app.use('/users', users)
-app.use('/albums', albums)
 
 app.use((request, response) => {
   response.status(404).render('not_found')
