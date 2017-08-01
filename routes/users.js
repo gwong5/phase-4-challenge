@@ -41,7 +41,12 @@ passport.use(new LocalStrategy({
 
 router.get('/:userId', (request, response) => {
   const { userId } = request.params
-  response.render('profile')
+  
+  Database.findUserById(userId, (error, member) => {
+    Database.getReviewsByUser(userId, (error, reviews) => {
+      response.render('profile', { member: member, reviews: reviews })
+    })
+  })
 })
 
 router.post('/sign_in',
@@ -54,6 +59,7 @@ router.post('/sign_in',
 
 router.post('/sign_up', (request, response) => {
   const { name, email, password } = request.body
+
   Database.findUserByEmail(email, (error, user) => {
     if (user) {
       request.flash('signUpError', 'User already exists.')

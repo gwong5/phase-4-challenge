@@ -1,10 +1,26 @@
 <% include includes/header.ejs %>
 
+<h1><%= member.name %></h1>
 <div>
-  profile pic
+  <img src="<%=member.avatar_url%>" alt="Profile pic">
+  <% if (member.id === user.id) { %>
+    <form>
+      <input type="text" name="avatar_url" placeholder="enter avatar url">
+      <input type="submit" value="update">
+    </form>
+  <% } %>
+  <div>
+    Email: <%= member.email %>  
+  </div>
+  <div>
+    Date Joined: <%= member.join_date %>
+  </div>
   reviews
   stuff
   edit
+</div>
+<div>
+  <% %>
 </div>
 
 <% include includes/footer.ejs %>
