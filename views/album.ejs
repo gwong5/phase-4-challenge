@@ -4,10 +4,22 @@
   <em>by <%= album.artist %></em>
 
   <h2>Reviews</h2>
-  <form action="/albums/<%= album.id %>/new_review">
-    <input type="submit" value="Add Review">
-  </form>
-
-  <!-- TODO: implement album reviews -->
+  <% if (user) { %>
+    <form action="/albums/<%= album.id %>/new_review">
+      <input type="submit" value="Add Review">
+    </form>
+  <% } %>
+  <% if (reviews) { %>
+    <% reviews.forEach(function(review) { %>
+      <div>
+        <h5><a href="/albums/<%= album.id %>"><%= review.title %></a></h5>
+        <span><%= review.artist %></span>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <div>
+      There are no reviews for this album yet
+    </div>
+  <% } %>
 
 <% include includes/footer.ejs %>

@@ -15,9 +15,18 @@
   <div>
     Date Joined: <%= member.join_date %>
   </div>
-  reviews
-  stuff
-  edit
+  <% if (reviews) { %>
+    <% reviews.forEach((review) => { %>
+      <<div>
+      <span><%= review.review_created %></span>
+      <span><%= review.review_body %></span>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <div>
+      User has not left any reviews yet
+    </div>
+  <% } %>
 </div>
 <div>
   <% %>
