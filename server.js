@@ -11,18 +11,18 @@ const app = express()
 require('ejs')
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'))
-
 app.use(session({
   secret: process.env.SECRET || 'keyboard cat',
   resave: false,
   saveUninitialized: true,
   cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }))
+
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
+app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use((request, response, next) => {
@@ -58,13 +58,13 @@ app.get('/sign_in', (request, response) => {
   response.render('sign_in', { signInError: request.flash('signInError') })
 })
 
-app.use((request, response, next) => {
-  if (request.user) {
-    next()
-  } else {
-    response.redirect('/sign_in')
-  }
-})
+// app.use((request, response, next) => {
+//   if (request.user) {
+//     next()
+//   } else {
+//     response.redirect('/sign_in')
+//   }
+// })
 
 app.use('/users', users)
 app.use('/albums', albums)

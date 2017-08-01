@@ -12,7 +12,7 @@ CREATE TABLE users (
   id SERIAL,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  join_date DATE,
+  join_date DATE DEFAULT CURRENT_DATE,
   avatar_url VARCHAR(255),
   salted_password VARCHAR(255) NOT NULL
 );

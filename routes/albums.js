@@ -8,7 +8,7 @@ router.get('/:albumID', (request, response) => {
     if (error) {
       response.status(500).render('error', { error: error })
     } else {
-      const album = albums[0]
+      const album = albums
       response.render('album', { album: album })
     }
   })
