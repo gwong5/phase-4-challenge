@@ -1,28 +1,35 @@
 <% include includes/header.ejs %>
 
-  <h1><%= album.title %></h1>
-  <em>by <%= album.artist %></em>
-
-  <h2>Reviews</h2>
-  <% if (user) { %>
-    <form action="/albums/<%= album.id %>/new_review">
-      <input type="submit" value="Add Review">
-    </form>
-  <% } %>
-  <% if (reviews.length > 0) { %>
-    <% reviews.forEach(function(review) { %>
-      <div>
-        <h5><a href="/users/<%= review.reviewer_id %>"><%= review.reviewer %></a></h5>
-        <span><%= review.creation_date %></span>
-        <div>
-          <%= review.review_body %>
-        </div>
-      </div>
-    <% }) %>
-  <% } else { %>
-    <div>
-      There are no reviews for this album yet
+  <div class="container">
+    <div class="row">
+      <h1><%= album.title %></h1>
+      <em>by <%= album.artist %></em>
     </div>
-  <% } %>
+    <div class="row">
+      <h3>Reviews</h3>
+      <% if (user) { %>
+        <a class="waves-effect waves-light btn" href="/albums/<%= album.id %>/new_review">Add a review</a>
+      <% } %>
+    <ul class="collection">
+      <% if (reviews.length > 0) { %>
+        <% reviews.forEach((review) => { %>
+          <li class="collection-item avatar">
+            <img alt="user avatar" class="circle">
+            <span class="title">
+              <a href="/users/<%= review.reviewer_id %>"><%= review.reviewer  %></a>
+            </span>
+            <p>
+              <%= review.creation_date %><br>
+              <%= review.review_body %>
+            </p>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <li class="collection-item">
+          <h5>There are no reviews for this album yet</h5>
+        </li>
+      <% } %>
+    </div>
+  </div>
 
 <% include includes/footer.ejs %>
