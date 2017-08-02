@@ -9,11 +9,14 @@
       <input type="submit" value="Add Review">
     </form>
   <% } %>
-  <% if (reviews) { %>
+  <% if (reviews.length > 0) { %>
     <% reviews.forEach(function(review) { %>
       <div>
-        <h5><a href="/albums/<%= album.id %>"><%= review.title %></a></h5>
-        <span><%= review.artist %></span>
+        <h5><a href="/users/<%= review.reviewer_id %>"><%= review.reviewer %></a></h5>
+        <span><%= review.creation_date %></span>
+        <div>
+          <%= review.review_body %>
+        </div>
       </div>
     <% }) %>
   <% } else { %>

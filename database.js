@@ -35,11 +35,11 @@ const getReviews = function (callback) {
 }
 
 const getReviewsByAlbum = function (albumId, callback) {
-  query("SELECT * FROM reviews WHERE album_id = $1 ORDER BY review_created DESC", [albumId], callback)
+  query("SELECT users.name AS reviewer, users.id AS reviewer_id, reviews.id AS review_id, reviews.review_body, reviews.review_created AS creation_date FROM users JOIN reviews ON user_id = users.id JOIN albums ON album_id = $1 GROUP BY users.name, users. id, reviews.id, reviews.review_body, reviews.review_created", [albumId], callback)
 }
 
 const getReviewsByUser = function (userId, callback) {
-  query("SELECT * FROM reviews WHERE user_id = $1", [userId], callback)
+  query("SELECT albums.id AS album_id, albums.title AS album_title, albums.artist AS album_artist, reviews.id AS review_id, reviews.review_created AS creation_date, reviews.review_body AS review_body FROM albums JOIN reviews ON reviews.album_id = albums.id WHERE reviews.user_id = $1 GROUP BY albums.id, albums.title, albums.artist, reviews.id, reviews.review_created, reviews.review_body", [userId], callback)
 }
 
 const addNewReview = function (albumId, userId, reviewBody, callback) {

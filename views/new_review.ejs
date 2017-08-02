@@ -1,11 +1,25 @@
 <% include includes/header.ejs %>
-
-<div>
-  New review for <%= album.title %>
-</div>
-<form action="/albums/<%=album.id%>/new_review" method="post">
-  <textarea name="reviewBody" rows="50" cols="50" required></textarea>
-  <input type="submit" value="Submit">
-</form>
+  <div class="container">
+    <div class="row center">
+      <h1>
+        New review for <%= album.title %>
+      </h1>
+    </div>
+    <div class="row">
+      <form action="/albums/<%=album.id%>/new_review" method="post" class="col s12">
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea id="review_input" name="reviewBody" class="materialize-textarea" data-length="3000"></textarea>
+            <label for="review_input">Enter your review</label>
+          </div>
+          <div class="row col s2 offset-s9">
+            <button class="btn waves-effect waves-light" type="submit">Submit
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
 <% include includes/footer.ejs %>

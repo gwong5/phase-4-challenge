@@ -22,7 +22,7 @@ passport.use(new LocalStrategy({
   },
   (request, email, plainTextPassword, done) => {
     Database.findUserByEmail(email, (error, user) => {
-      if (!user) {
+      if (!user[0]) {
         return done(null, false, request.flash('signInError', 'User does not exist.'))
       } else {
         const isValid = User.validatePassword(plainTextPassword, user[0].salted_password)
@@ -69,6 +69,18 @@ router.post('/sign_up', (request, response) => {
           response.redirect(`/users/${newUser[0].id}`)
         })
       })
+    }
+  })
+})
+
+router.post('/:userId/reviews/:reviewId/delete', (request, response) => {
+  const { userId, reviewId } = request.params
+
+  Database.deleteReview(reviewId, (error) => {
+    if (error) {
+      response.status(500).render('error', { error: error })
+    } else {
+      response.redirect(`/users/${userId}`)
     }
   })
 })

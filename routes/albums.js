@@ -13,7 +13,7 @@ router.get('/:albumId', (request, response) => {
         if (error) {
           response.status(500).render('error', { error: error })
         } else {
-          response.render('album', { album: album, reviews: reviews })
+          response.render('album', { album: album[0], reviews: reviews })
         }
       })
     }
@@ -28,7 +28,7 @@ router.route('/:albumId/new_review')
       if (error) {
         response.status(500).render('error', { error: error})
       } else {
-        response.render('new_review', { album: album })
+        response.render('new_review', { album: album[0] })
       }
     })
   })
@@ -46,6 +46,5 @@ router.route('/:albumId/new_review')
       }
     })
   })
-
 
 module.exports = router
