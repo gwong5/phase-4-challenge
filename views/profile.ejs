@@ -1,41 +1,41 @@
 <% include includes/header.ejs %>
 
-<h1><%= member.name %></h1>
-<div>
-  <img src="<%=member.avatar_url%>" alt="Profile pic">
-  <% if (user && user.id === member.id) { %>
-    <form>
-      <input type="text" name="avatar_url" placeholder="enter avatar url">
-      <input type="submit" value="update">
-    </form>
-  <% } %>
+  <h1><%= member.name %></h1>
   <div>
-    Email: <%= member.email %>  
-  </div>
-  <div>
-    Date Joined: <%= member.join_date %>
-  </div>
-  <% if (reviews.length > 0) { %>
-    <% reviews.forEach((review) => { %>
-      <div>
-        <div><%= review.album_title %> by <%= review.album_artist %></div>
-        <span><%= review.creation_date %></span>
-        <span><%= review.review_body %></span>
-      </div>
-      <% if (user && user.id === member.id) { %>
-        <form action="/users/<%= member.id %>/reviews/<%= review.review_id %>/delete" method="post">
-          <input type="submit" value="delete">
-        </form>
-      <% } %>
-    <% }) %>
-  <% } else { %>
+    <img src="<%=member.avatar_url%>" alt="Profile pic">
+    <% if (user && user.id === member.id) { %>
+      <form>
+        <input type="text" name="avatar_url" placeholder="enter avatar url">
+        <input type="submit" value="update">
+      </form>
+    <% } %>
     <div>
-      User has not left any reviews yet
+      Email: <%= member.email %>  
     </div>
-  <% } %>
-</div>
-<div>
-  <% %>
-</div>
+    <div>
+      Date Joined: <%= member.join_date %>
+    </div>
+    <% if (reviews.length > 0) { %>
+      <% reviews.forEach((review) => { %>
+        <div>
+          <div><a href="/albums/<%= review.album_id %>"><%= review.album_title %></a> by <%= review.album_artist %></div>
+          <span><%= review.creation_date %></span>
+          <span><%= review.review_body %></span>
+        </div>
+        <% if (user && user.id === member.id) { %>
+          <form action="/users/<%= member.id %>/reviews/<%= review.review_id %>/delete" method="post">
+            <input type="submit" value="delete">
+          </form>
+        <% } %>
+      <% }) %>
+    <% } else { %>
+      <div>
+        User has not left any reviews yet
+      </div>
+    <% } %>
+  </div>
+  <div>
+    <% %>
+  </div>
 
 <% include includes/footer.ejs %>
