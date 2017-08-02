@@ -59,7 +59,7 @@ router.post('/sign_up', (request, response) => {
   const { name, email, password } = request.body
 
   Database.findUserByEmail(email, (error, user) => {
-    if (user) {
+    if (user[0]) {
       request.flash('signUpError', 'User already exists.')
       response.redirect('/sign_up')
     } else {

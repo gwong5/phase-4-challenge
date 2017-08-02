@@ -31,7 +31,11 @@ const getAlbumByID = function (albumId, callback) {
 }
 
 const getReviews = function (callback) {
-  query("SELECT * FROM reviews ORDER BY review_created DESC LIMIT 3", [], callback)
+  query("SELECT * FROM reviews ORDER BY id DESC LIMIT 3", [], callback)
+}
+
+const getRecentReviews = function (callback) {
+  query("SELECT reviews.id AS review_id, reviews.review_body AS review_body, reviews.review_created AS creation_date, users.id AS reviewer_id, users.name AS reviewer, albums.id AS album_id, albums.title AS album_title, albums.artist AS album_artist FROM reviews JOIN users ON users.id = user_id JOIN albums ON albums.id = album_id ORDER BY review_id DESC LIMIT 3", [], callback)
 }
 
 const getReviewsByAlbum = function (albumId, callback) {
@@ -39,7 +43,7 @@ const getReviewsByAlbum = function (albumId, callback) {
 }
 
 const getReviewsByUser = function (userId, callback) {
-  query("SELECT albums.id AS album_id, albums.title AS album_title, albums.artist AS album_artist, reviews.id AS review_id, reviews.review_created AS creation_date, reviews.review_body AS review_body FROM albums JOIN reviews ON reviews.album_id = albums.id WHERE reviews.user_id = $1 GROUP BY albums.id, albums.title, albums.artist, reviews.id, reviews.review_created, reviews.review_body", [userId], callback)
+  query("SELECT albums.id AS album_id, albums.title AS album_title, albums.artist AS album_artist, reviews.id AS review_id, reviews.review_created AS creation_date, reviews.review_body AS review_body FROM albums JOIN reviews ON reviews.album_id = albums.id WHERE reviews.user_id = $1 GROUP BY albums.id, albums.title, albums.artist, reviews.id, reviews.review_created, reviews.review_body ORDER BY reviews.id DESC", [userId], callback)
 }
 
 const addNewReview = function (albumId, userId, reviewBody, callback) {
@@ -71,6 +75,7 @@ module.exports = {
   getAlbums,
   getAlbumByID,
   getReviews,
+  getRecentReviews,
   getReviewsByUser,
   getReviewsByAlbum
 }

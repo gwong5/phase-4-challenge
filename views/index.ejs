@@ -18,8 +18,9 @@
             <% albums.forEach(function(album) { %>
               <div>
                 <div class="card-action">
-                  <a href="/albums/<%= album.id %>"><%= album.title %></a>
-                  <span>by <%= album.artist %></span>
+                  <a href="/albums/<%= album.id %>">
+                    <%= album.title %> -- <%= album.artist %>
+                  </a>
                 </div>
               </div>
             <% }) %>
@@ -30,11 +31,22 @@
       <div class="card hoverable">
         <div class="card-content">
           <span class="card-title">Recent Reviews</span>
-            <% albums.forEach(function(album) { %>
+            <% reviews.forEach(function(review) { %>
               <div>
                 <div class="card-action">
-                  <a href="/albums/<%= album.id %>"><%= album.title %></a>
-                  <span>by <%= album.artist %></span>
+                  <a href="/albums/<%= review.album_id %>">
+                    <%= review.album_title %> -- <%= review.album_artist %>
+                  </a>
+                  <span class="right"><%= review.creation_date %></span>
+                </div>
+                <div class="card-content">
+                  <p>
+                    <%= review.review_body %>
+                    <br>
+                    <span class="right">
+                      -- <a href="/users/<%= review.reviewer_id %>"><%= review.reviewer %></a>
+                    </span>
+                  </p>
                 </div>
               </div>
             <% }) %>
@@ -42,6 +54,5 @@
       </div>
     </div>
   </div>
-
 
 <% include includes/footer.ejs %>
