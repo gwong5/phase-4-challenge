@@ -73,4 +73,16 @@ router.post('/sign_up', (request, response) => {
   })
 })
 
+router.post('/:userId/reviews/:reviewId/delete', (request, response) => {
+  const { userId, reviewId } = request.params
+
+  Database.deleteReview(reviewId, (error) => {
+    if (error) {
+      response.status(500).render('error', { error: error})
+    } else {
+      response.redirect(`/users/${userId}`)
+    }
+  })
+})
+
 module.exports = router
