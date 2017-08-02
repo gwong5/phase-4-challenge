@@ -2,10 +2,9 @@
 
   <div class="container">
     <div class="row">
-      <h1><%= album.title %></h1>
+      <h2><%= album.title %></h1>
       <em>by <%= album.artist %></em>
     </div>
-    <div class="row">
       <h3>Reviews</h3>
       <% if (user) { %>
         <a class="waves-effect waves-light btn" href="/albums/<%= album.id %>/new_review">Add a review</a>
@@ -14,10 +13,12 @@
       <% if (reviews.length > 0) { %>
         <% reviews.forEach((review) => { %>
           <li class="collection-item avatar">
-            <img alt="user avatar" class="circle">
-            <span class="title">
-              <a href="/users/<%= review.reviewer_id %>"><%= review.reviewer  %></a>
-            </span>
+            <a href="/users/<%= review.reviewer_id %>">
+              <img src="" class="circle" onerror="this.onerror=null;this.src='https://lorempixel.com/100/190/nature/6';">
+              <span class="title">
+                <%= review.reviewer  %>
+              </span>
+            </a>
             <p>
               <%= review.creation_date %><br>
               <%= review.review_body %>
@@ -29,7 +30,7 @@
           <h5>There are no reviews for this album yet</h5>
         </li>
       <% } %>
-    </div>
+    </ul>
   </div>
 
 <% include includes/footer.ejs %>
