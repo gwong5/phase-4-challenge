@@ -1,41 +1,67 @@
 <% include includes/header.ejs %>
 
-  <h1><%= member.name %></h1>
-  <div>
-    <img src="<%=member.avatar_url%>" alt="Profile pic">
-    <% if (user && user.id === member.id) { %>
-      <form>
-        <input type="text" name="avatar_url" placeholder="enter avatar url">
-        <input type="submit" value="update">
-      </form>
-    <% } %>
-    <div>
-      Email: <%= member.email %>  
-    </div>
-    <div>
-      Date Joined: <%= member.join_date %>
-    </div>
-    <% if (reviews.length > 0) { %>
-      <% reviews.forEach((review) => { %>
-        <div>
-          <div><a href="/albums/<%= review.album_id %>"><%= review.album_title %></a> by <%= review.album_artist %></div>
-          <span><%= review.creation_date %></span>
-          <span><%= review.review_body %></span>
+  <div class="row">
+    <div class="col s5 m">
+      <div class="card horizontal hoverable">
+        <div class="card-image">
+          <img src="" onerror="this.onerror=null;this.src='https://lorempixel.com/100/190/nature/6';">
         </div>
-        <% if (user && user.id === member.id) { %>
-          <form action="/users/<%= member.id %>/reviews/<%= review.review_id %>/delete" method="post">
-            <input type="submit" value="delete">
-          </form>
-        <% } %>
-      <% }) %>
-    <% } else { %>
-      <div>
-        User has not left any reviews yet
+        <div class="card-stacked">
+        <h5 class="header" style="margin-left: 10px"><%= member.name %></h5>
+          <div class="card-content">
+            <p>Email: <%= member.email %></p>
+            <br>
+            <p>Member since: <%= member.join_date %></p>
+          </div>
+        </div>
       </div>
-    <% } %>
+    </div>
   </div>
-  <div>
-    <% %>
+  <% if (user && user.id === member.id) { %>
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s2">
+            <input id="avatar_url" type="text" name="avatar_url" class="validate">
+            <label for="avatar_url">Upload an avatar URL</label>
+          </div>
+          <div class="input-field col s6">
+            <button class="btn-floating" type="submit"><i class="material-icons">insert_photo</i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  <% } %>
+  <div class="container">
+    <h3><%= member.name %>'s reviews</h3>
+    <ul class="collection">
+      <% if (reviews.length > 0) { %>
+        <% reviews.forEach((review) => { %>
+          <li class="collection-item">
+            <a href="/albums/<%= review.album_id %>">
+              <span class="title">
+                <% if (user && user.id === member.id) { %>
+                  <form action="/users/<%= member.id %>/reviews/<%= review.review_id %>/delete" method="post">
+                    <button class="btn-floating right" type="submit"><i class="material-icons center">delete_forever</i></button>
+                  </form>
+                <% } %>
+               <h5><%= review.album_title %></h3> 
+               by <%= review.album_artist %>
+              </span>
+            </a>
+            <p>
+              <%= review.creation_date %>
+              <br>
+              <%= review.review_body %>
+            </p>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <li class="collection-item">
+          <h5>User has not left any reviews yet</h5>
+        </li>
+      <% } %>
+    </ul>
   </div>
 
 <% include includes/footer.ejs %>

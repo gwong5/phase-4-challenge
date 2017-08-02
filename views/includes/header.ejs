@@ -3,18 +3,21 @@
 <head>
   <title>Vinyl</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
-  <div class="siteNavBar">
-  <a href="/"><span class="title">Vinyl</span></a>
-    <span class="siteNavBar right">
-      <% if (user) { %>
-        <a href="/users/<%= user.id %>">Profile</a>
-        <a href="/sign_out">Sign Out</a>
-      <% } else { %>
-        <a href="/sign_up">Sign Up</a>
-        <a href="/sign_in">Sign In</a>
-      <% } %>
-    </span>
-  </div>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="/" class="brand-logo" style="margin-left: 10px">Vinyl</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <% if (user) { %>
+          <li><a class="waves-effect waves-light btn" href="/users/<%= user.id %>">Profile</a></li>
+          <li><a class="waves-effect waves-light btn" href="/sign_out">Sign Out</a></li>
+        <% } else { %>
+          <li><a class="waves-effect waves-light btn" href="/sign_up">Sign Up</a></li>
+          <li><a class="waves-effect waves-light btn" href="/sign_in">Sign In</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
