@@ -47,13 +47,21 @@ router.get('/:userId', (request, response) => {
   })
 })
 
-router.post('/sign_in',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/sign_in',
-    failureFlash: true
-  })
-)
+router.post('/sign_in', (request, response, next) => {
+  passport.authenticate('local', (error, user, info) => {
+    if (error) {
+      return next(error)
+    } else if (! user) {
+      return response.redirect('/sign_in')
+    }
+    request.login(user, (error) => {
+      if (error) {
+        return next(error)
+      }
+      return response.redirect(`/users/${user.id}`)
+    })
+  })(request, response, next);
+})
 
 router.post('/sign_up', (request, response) => {
   const { name, email, password } = request.body
