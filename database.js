@@ -31,15 +31,69 @@ const getAlbumByID = function (albumId, callback) {
 }
 
 const getReviews = function (callback) {
-  query("SELECT * FROM reviews ORDER BY id DESC LIMIT 3", [], callback)
+  query(
+    `SELECT 
+      *
+    FROM
+      reviews
+    ORDER BY
+      id
+    DESC LIMIT
+      3`,
+    [], callback)
 }
 
 const getRecentReviews = function (callback) {
-  query("SELECT reviews.id AS review_id, reviews.review_body AS review_body, reviews.review_created AS creation_date, users.id AS reviewer_id, users.name AS reviewer, albums.id AS album_id, albums.title AS album_title, albums.artist AS album_artist FROM reviews JOIN users ON users.id = user_id JOIN albums ON albums.id = album_id ORDER BY review_id DESC LIMIT 3", [], callback)
+  query(
+    `SELECT
+      reviews.id AS review_id,
+      reviews.review_body AS review_body,
+      reviews.review_created AS creation_date,
+      users.id AS reviewer_id, users.name AS reviewer,
+      albums.id AS album_id,
+      albums.title AS album_title,
+      albums.artist AS album_artist
+    FROM
+      reviews
+    JOIN
+      users
+    ON
+      users.id = user_id
+    JOIN
+      albums
+    ON
+      albums.id = album_id
+    ORDER BY
+      review_id
+    DESC LIMIT 3`,
+    [], callback)
 }
 
 const getReviewsByAlbum = function (albumId, callback) {
-  query("SELECT users.name AS reviewer, users.id AS reviewer_id, reviews.id AS review_id, reviews.review_body, reviews.review_created AS creation_date FROM users JOIN reviews ON user_id = users.id JOIN albums ON album_id = $1 GROUP BY users.name, users. id, reviews.id, reviews.review_body, reviews.review_created", [albumId], callback)
+  query(
+    `SELECT 
+      users.name AS reviewer,
+      users.id AS reviewer_id,
+      reviews.id AS review_id,
+      reviews.review_body,
+      reviews.review_created AS creation_date
+    FROM 
+      users
+    JOIN
+      reviews
+    ON
+      user_id = users.id
+    JOIN
+      albums
+    ON
+      album_id = $1
+    GROUP BY
+      users.name,
+      users. id,
+      reviews.id,
+      reviews.review_body,
+      reviews.review_created`,
+    [albumId], callback)
 }
 
 const getReviewsByUser = function (userId, callback) {
